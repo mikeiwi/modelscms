@@ -9,6 +9,11 @@ class ModelPerson(models.Model):
     nickname = models.CharField(max_length=100, blank=True)
     email = models.CharField(max_length=100, blank=True)
 
+    class Meta:
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
+        ordering = ('-pk',)
+
 
 class Photo(models.Model):
     """An element o a Model's gallery."""
@@ -16,3 +21,8 @@ class Photo(models.Model):
                                 null=True, blank=True)
     model_person = models.ForeignKey('catalog.ModelPerson',
                                      on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Foto'
+        verbose_name_plural = 'Fotos'
+        ordering = ('-pk',)
