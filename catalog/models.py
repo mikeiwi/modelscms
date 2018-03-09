@@ -26,3 +26,6 @@ class Photo(models.Model):
         verbose_name = 'Foto'
         verbose_name_plural = 'Fotos'
         ordering = ('-pk',)
+
+    def __str__(self):
+        return f"Foto {self.pk}"
