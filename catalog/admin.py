@@ -14,5 +14,11 @@ class ModelPersonAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'first_name', 'last_name', 'nickname',)
     inlines = [PhotoInline]
 
+
+class PhotoAdmin(admin.ModelAdmin):
+    fields = ('location',)
+    list_display = ('location',)
+
+
 admin.site.register(ModelPerson, ModelPersonAdmin)
-admin.site.register(Photo)
+admin.site.register(Photo, PhotoAdmin)
