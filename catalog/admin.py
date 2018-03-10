@@ -16,8 +16,8 @@ class ModelPersonAdmin(admin.ModelAdmin):
 
 
 class PhotoAdmin(admin.ModelAdmin):
-    fields = ('location',)
-    list_display = ('location',)
+    fields = ('location', 'model_person',)
+    list_display = ('location', 'model_person',)
 
 
 admin.site.register(ModelPerson, ModelPersonAdmin)

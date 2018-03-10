@@ -1,6 +1,6 @@
 from django.db import models
+from s3direct.fields import S3DirectField
 
-# Create your models here.
 
 class ModelPerson(models.Model):
     """Represents a person in the catalog."""
@@ -17,8 +17,7 @@ class ModelPerson(models.Model):
 
 class Photo(models.Model):
     """An element o a Model's gallery."""
-    location = models.CharField('URL de archivo', max_length=255,
-                                null=True, blank=True)
+    location = S3DirectField(dest='s3_upload')
     model_person = models.ForeignKey('catalog.ModelPerson',
                                      on_delete=models.CASCADE)
 
