@@ -11,6 +11,27 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import uuid
+
+
+def env_var(key, default=None):
+    """Retrieves env vars and makes Python boolean replacements"""
+    val = os.environ.get(key, default)
+    if val == 'True':
+        val = True
+    elif val == 'False':
+        val = False
+    elif type(val) == str and val.isdigit():
+        val = int(val)
+    return val
+
+
+def get_short_uuid():
+    num_bytes = 8
+    num_chars = num_bytes * 2
+    uuid_str = re.sub('-', '', str(uuid.uuid4()))
+    short_uuid = uuid_str[0:num_chars]
+    return short_uuid
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    's3direct',
     'catalog',
 ]
 
@@ -120,3 +142,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Amazon credentials
+AWS_ACCESS_KEY_ID = env_var('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = env_var('AWS_SECRET_ACCESS_KEY', '')
+
+# Django-storages for S3
+AWS_STORAGE_BUCKET_NAME = env_var('AWS_STORAGE_BUCKET_NAME', '')
+AWS_S3_SECURE_URLS = os.environ.get('AWS_S3_SECURE_URLS', True)
+
+# s3direct settings for uploading files directly to s3
+S3DIRECT_REGION = env_var('S3DIRECT_REGION', 'eu-west-1')
+S3DIRECT_DESTINATIONS = {
+    'invoice_s3_upload': {
+        'key': lambda original_filename: 'test/' + original_filename[:original_filename.rfind('.')] +
+        '_' + get_short_uuid() + original_filename[original_filename.rfind('.'):],
+        'content_length_range': (0, 31457280),
+    }
+}
