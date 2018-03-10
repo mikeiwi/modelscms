@@ -13,18 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import uuid
 import re
-
-
-def env_var(key, default=None):
-    """Retrieves env vars and makes Python boolean replacements"""
-    val = os.environ.get(key, default)
-    if val == 'True':
-        val = True
-    elif val == 'False':
-        val = False
-    elif type(val) == str and val.isdigit():
-        val = int(val)
-    return val
+import environ
 
 
 def get_short_uuid():
@@ -34,6 +23,24 @@ def get_short_uuid():
     short_uuid = uuid_str[0:num_chars]
     return short_uuid
 
+
+# djangoproject/modelscms/settings.py - 2 = djangoproject/
+ROOT_DIR = environ.Path(__file__) - 2
+
+# Load operating system environment variables and then prepare to use them
+env = environ.Env()
+
+# The .env file should load only in development environment.
+# You can set this env var with `export DJANGO_READ_DOT_ENV_FILE=True` in your
+# shell, or even better, add it to your "*rc" shell file.
+READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
+
+if READ_DOT_ENV_FILE:
+    # Operating System environment variables have precedence over variables
+    # defined in the .env file, that is to say variables from the .env files
+    # will only be used if not defined as environment variables.
+    env_file = str(ROOT_DIR.path('.env'))
+    env.read_env(env_file)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -146,15 +153,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Amazon credentials
-AWS_ACCESS_KEY_ID = env_var('AWS_ACCESS_KEY_ID', '')
-AWS_SECRET_ACCESS_KEY = env_var('AWS_SECRET_ACCESS_KEY', '')
+AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY', '')
 
 # Django-storages for S3
-AWS_STORAGE_BUCKET_NAME = env_var('AWS_STORAGE_BUCKET_NAME', '')
-AWS_S3_SECURE_URLS = os.environ.get('AWS_S3_SECURE_URLS', True)
+AWS_STORAGE_BUCKET_NAME = env.str('AWS_STORAGE_BUCKET_NAME', '')
+AWS_S3_SECURE_URLS = env.bool('AWS_S3_SECURE_URLS', True)
 
 # s3direct settings for uploading files directly to s3
-S3DIRECT_REGION = env_var('S3DIRECT_REGION', 'eu-west-1')
+S3DIRECT_REGION = env.str('S3DIRECT_REGION', 'eu-west-1')
 S3DIRECT_DESTINATIONS = {
     's3_upload': {
         'key': (lambda original_filename: 'test/' +

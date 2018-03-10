@@ -16,7 +16,6 @@ class ModelPersonAdmin(admin.ModelAdmin):
 
 
 class PhotoAdmin(admin.ModelAdmin):
-    fields = ('location', 'model_person',)
     list_display = ('location', 'model_person',)
 
 
