@@ -17,7 +17,7 @@ import environ
 
 
 def get_short_uuid():
-    num_bytes = 8
+    num_bytes = 4
     num_chars = num_bytes * 2
     uuid_str = re.sub('-', '', str(uuid.uuid4()))
     short_uuid = uuid_str[0:num_chars]
