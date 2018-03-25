@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import ModelPerson
+from .models import ModelPerson, Photo
 
 
 def home(request):
@@ -10,4 +10,6 @@ def home(request):
 
 def profile(request, nickname):
     model = get_object_or_404(ModelPerson, nickname=nickname)
-    return render(request, 'catalog/profile.html', {'model': model})
+    photos = Photo.objects.filter(model_person=model)
+    return render(request, 'catalog/profile.html',
+                  {'model': model, 'photos': photos})

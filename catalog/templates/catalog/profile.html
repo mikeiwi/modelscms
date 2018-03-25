@@ -11,8 +11,37 @@
 
 <!-- Main -->
 <div id="main">
+  <!-- One -->
+  <section id="one">
+    <header class="major">
+      <h2>{{ model.bio }}</h2>
+    </header>
+  </section>
 
-wqeee
-
+  <!-- Two -->
+  <section id="two">
+    <h2>Fotos</h2>
+    <div class="row" id="gallery">
+      {% for photo in photos %}
+      <article class="6u 12u$(3) work-item">
+	<a href="{{ photo.location }}" class="image fit thumb">
+          <img src="{{ photo.location }}" alt="" /></a>
+      </article>
+      {% endfor %}
+    </div>
 </div>
 {% endblock content %}
+
+{% block extra_js_footer %}
+<script>
+  $('#gallery').poptrox({
+    overlayColor: '#2c2c2c',
+    overlayOpacity: 0.85,
+    selector: '.work-item a',
+    usePopupDefaultStyling: false,
+    usePopupEasyClose: false,
+    usePopupNav: true,
+    windowMargin: 50
+  });
+</script>
+{% endblock extra_js_footer %}
