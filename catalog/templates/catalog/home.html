@@ -19,7 +19,7 @@
     <div class="row">
       {% for model in models %}
       <article class="6u 12u$(3) work-item">
-	<a href="#" class="image fit thumb">
+	<a href="{% url 'model-profile' model.nickname %}" class="image fit thumb">
           <img src="{{ model.profile_pic }}" alt="" /></a>
 	<h3>{{ model.nickname }}</h3>
 	<p>{{ model.bio }}</p>
