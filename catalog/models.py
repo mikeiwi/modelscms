@@ -8,6 +8,8 @@ class ModelPerson(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     nickname = models.CharField(max_length=100, blank=True)
     email = models.CharField(max_length=100, blank=True)
+    profile_pic = S3DirectField(dest='s3_upload')
+    bio = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Modelo'

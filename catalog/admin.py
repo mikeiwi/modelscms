@@ -10,7 +10,8 @@ class PhotoInline(admin.TabularInline):
 
 
 class ModelPersonAdmin(admin.ModelAdmin):
-    fields = ('email', 'first_name', 'last_name', 'nickname',)
+    fields = ('email', 'first_name', 'last_name', 'nickname', 'profile_pic',
+              'bio',)
     list_display = ('id', 'email', 'first_name', 'last_name', 'nickname',)
     inlines = [PhotoInline]
 
